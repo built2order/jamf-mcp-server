@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { JamfApiClient } from '../jamf-client.js';
 
 describe('JamfApiClient', () => {

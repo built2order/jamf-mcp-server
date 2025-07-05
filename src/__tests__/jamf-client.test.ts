@@ -6,8 +6,8 @@ describe('JamfApiClient', () => {
   beforeEach(() => {
     client = new JamfApiClient({
       baseUrl: 'https://test.jamfcloud.com',
-      username: 'testuser',
-      password: 'testpass',
+      clientId: 'fake-id',
+      clientSecret: 'fake-secret',
       readOnlyMode: true,
     });
   });
@@ -29,6 +29,25 @@ describe('JamfApiClient', () => {
       await expect(client.updateInventory('device1')).rejects.toThrow(
         'Cannot update inventory in read-only mode'
       );
+    });
+  });
+
+  describe('getNotifications', () => {
+    it('should fetch notifications from the /v1/notifications endpoint', async () => {
+      // Mock axios
+      const mockData = { notifications: [{ id: 1, message: 'Test notification' }] };
+      const client = new JamfApiClient({
+        baseUrl: 'https://test.jamfcloud.com',
+        clientId: 'fake-id',
+        clientSecret: 'fake-secret',
+        readOnlyMode: true,
+      });
+      // @ts-ignore
+      client.axios = { get: jest.fn().mockResolvedValue({ data: mockData }) };
+      const result = await client.getNotifications();
+      expect(result).toEqual(mockData);
+      // @ts-ignore
+      expect(client.axios.get).toHaveBeenCalledWith('/api/v1/notifications');
     });
   });
 });

@@ -327,4 +327,18 @@ export class JamfApiClient {
       throw error;
     }
   }
+
+  /**
+   * Fetch notifications from the Jamf Pro API /v1/notifications endpoint.
+   * @returns {Promise<any>} The notifications data from Jamf Pro.
+   */
+  async getNotifications(): Promise<any> {
+    try {
+      const response = await this.axios.get('/api/v1/notifications');
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch notifications:', error);
+      throw error;
+    }
+  }
 }
